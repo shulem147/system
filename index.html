@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donor Display</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #totalAmount {
+      font-size: 24px;
+      color: #2ecc71; /* Green color, you can change it */
+    }
+
+    #donorInfo {
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pledge Tracker</h1>
+  <p>Total Amount Pledged: $<span id="totalAmount"></span></p>
+  <p id="donorInfo"></p>
+
+  <script>
+    function updateDisplay(data) {
+      document.getElementById('totalAmount').textContent = data.totalAmount;
+      document.getElementById('donorInfo').textContent = "Donors: " + data.names.join(", ") + "<br>Amounts: $" + data.amounts.join(", $");
+    }
+
+    // Fetch data from the server every few seconds
+    function fetchData() {
+      google.script.run.withSuccessHandler(updateDisplay).getData();
+      setTimeout(fetchData, 5000); // Adjust the interval as needed
+    }
+
+    // Initial fetch when the page loads
+    window.onload = function () {
+      fetchData();
+    };
+  </script>
+</body>
+</html>
